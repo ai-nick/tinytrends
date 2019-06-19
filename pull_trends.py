@@ -31,10 +31,11 @@ class PyTrendApiServiceWorker(object):
             gprop='', 
             sleep=0)
         print(len(df))
-        df["acura_avg"] = df["acura"].rolling(window=5).mean()
-        print(df["acura_avg"])
+        #df["acura_avg"] = df["acura"].rolling(window=5).mean()
+        print(df.head())
+        df.to_csv("keyword_trendz.txt")
         
 pt = PyTrendApiServiceWorker()
-pt.SetKwArray(["acura", "italian food", "patagonia"])
+pt.SetKwArray(["used cars for sale", "fuel efficient", "sedan", "suv", "4wd"])
 print("running...")
 pt.GetKwTrendData()
