@@ -23,7 +23,7 @@ class PyTrendApiServiceWorker(object):
             day_start=1, 
             hour_start=0, 
             year_end=2018, 
-            month_end=2, 
+            month_end=3, 
             day_end=1, 
             hour_end=0, 
             cat=0, 
@@ -33,7 +33,8 @@ class PyTrendApiServiceWorker(object):
         print(len(df))
         #df["acura_avg"] = df["acura"].rolling(window=5).mean()
         print(df.head())
-        df.to_csv("keyword_trendz.txt")
+        print(df.tail())
+        #df.to_csv("keyword_trendz.txt")
         
 pt = PyTrendApiServiceWorker()
 pt.SetKwArray(["used cars for sale", "fuel efficient", "sedan", "suv", "4wd"])
