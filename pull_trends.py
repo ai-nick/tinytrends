@@ -1,7 +1,10 @@
 from pytrends.request import TrendReq
+from tinydb import TinyDB
 
 class PyTrendApiServiceWorker(object):
     kw_list = []
+
+    trend_db = TinyDB("./db/tinytrenddb.json")
     
     def __init__(self):
         self.pytrends = TrendReq(hl='en-US', tz=360)
