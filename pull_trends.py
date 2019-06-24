@@ -37,6 +37,6 @@ class PyTrendApiServiceWorker(object):
         #df.to_csv("keyword_trendz.txt")
         
 pt = PyTrendApiServiceWorker()
-pt.SetKwArray(["used cars for sale", "fuel efficient", "sedan", "suv", "4wd"])
+pt.SetKwArray(["fuel efficient", "sedan", "suv", "4wd", "honda", "chevy", "ford", "subaru"])
 print("running...")
 pt.GetKwTrendData()
