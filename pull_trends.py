@@ -4,6 +4,12 @@ from tinydb import TinyDB
 class PyTrendApiServiceWorker(object):
     kw_list = []
 
+    kw_list_dictionary = {
+        'bodystyles': ['coupe', 'pickup'],
+        'makes': ["honda", "chevy", "ford", "subaru"],
+        'models': ['honda civic', 'ford f-150', 'ford fusion', 'toyota sienna']
+    }
+
     trend_db = TinyDB("./db/tinytrenddb.json")
     
     def __init__(self):
@@ -33,13 +39,10 @@ class PyTrendApiServiceWorker(object):
             geo='', 
             gprop='', 
             sleep=0)
-        print(len(df))
-        #df["acura_avg"] = df["acura"].rolling(window=5).mean()
-        print(df.head())
-        print(df.tail())
-        #df.to_csv("keyword_trendz.txt")
+        df.to_csv("bodystyle_trends.txt")
+        self.trend_db.insert({'makes_trend_data_2018': df.to_json()})
         
 pt = PyTrendApiServiceWorker()
-pt.SetKwArray(["fuel efficient", "sedan", "suv", "4wd", "honda", "chevy", "ford", "subaru"])
+pt.SetKwArray(pt.kw_list_dictionary['bodystyles'])
 print("running...")
 pt.GetKwTrendData()
