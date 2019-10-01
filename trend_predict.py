@@ -33,15 +33,17 @@ class TrendPredictor(object):
         y_test = df[y_col].tail(test_split_index)
         # any columns beside the label column should (by convention) be dropped 
         # prior to passing df to this method
-        df = df.drop(columns=[col_name])
+        df = df.drop(columns=[y_col])
         X_Train = df.head(train_split_index)
         X_Test = df.tail(test_split_index)
         model = linear_model.TheilSenRegressor()
         model.fit(X_Train, y_train)
         print(model.score(X_Test, y_test))
 
+    def get_feature_correlation_cartesian(self):
+        
 
-    def predict_column_better_features(self, col_name):
+    def predict_column_better_features(self, col_name, train_percent):
         working_df = pd.DataFrame(self.full_data[col_name])
         working_df[col_name+"_rolling_55"] = working_df.rolling(window=55)[col_name].mean()
         working_df[col_name+"_rolling_34"] = working_df.rolling(window=34)[col_name].mean()
@@ -49,11 +51,12 @@ class TrendPredictor(object):
         working_df[col_name+"_rolling_5"] = working_df.rolling(window=5)[col_name].mean()
         working_df[col_name] = working_df[col_name].shift(1)
         working_df.dropna(inplace=True)
-        test_split 
+        print(working_df.head())
+        self.split_and_predict(working_df, col_name, train_percent)
 
 
 
 
 
 tp = TrendPredictor()
-tp.predict_column('pickup')
+tp.predict_column_better_features('pickup', .7)
