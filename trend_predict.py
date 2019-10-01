@@ -26,6 +26,32 @@ class TrendPredictor(object):
         model.fit(X_Train, y_train)
         print(model.score(X_Test, y_test))
 
+    def split_and_predict(self, df, y_col, train_percent):
+        test_split_index = (int(len(df) * (1.0-train_percent)))
+        train_split_index = (int(len(df) * train_percent))
+        y_train = df[y_col].head(train_split_index)
+        y_test = df[y_col].tail(test_split_index)
+        # any columns beside the label column should (by convention) be dropped 
+        # prior to passing df to this method
+        df = df.drop(columns=[col_name])
+        X_Train = df.head(train_split_index)
+        X_Test = df.tail(test_split_index)
+        model = linear_model.TheilSenRegressor()
+        model.fit(X_Train, y_train)
+        print(model.score(X_Test, y_test))
+
+
+    def predict_column_better_features(self, col_name):
+        working_df = pd.DataFrame(self.full_data[col_name])
+        working_df[col_name+"_rolling_55"] = working_df.rolling(window=55)[col_name].mean()
+        working_df[col_name+"_rolling_34"] = working_df.rolling(window=34)[col_name].mean()
+        working_df[col_name+"_rolling_13"] = working_df.rolling(window=13)[col_name].mean()
+        working_df[col_name+"_rolling_5"] = working_df.rolling(window=5)[col_name].mean()
+        working_df[col_name] = working_df[col_name].shift(1)
+        working_df.dropna(inplace=True)
+        test_split 
+
+
 
 
 
