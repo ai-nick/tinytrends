@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-class TrendAnalyzer(object):
+class TrendPlotter(object):
 
     def __init__(self):
         self.df = pd.read_csv("keyword_trendz_makes_search.txt")
@@ -23,6 +23,5 @@ class TrendAnalyzer(object):
 
 
 
-
-tl = TrendAnalyzer()
+tl = TrendPlotter()
 tl.plot_trends()

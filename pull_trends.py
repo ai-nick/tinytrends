@@ -27,7 +27,7 @@ class PyTrendApiServiceWorker(object):
         print(self.kw_list)
         df = self.pytrends.get_historical_interest(
             self.kw_list,
-            year_start=2019,
+            year_start=2018,
             month_start=1, 
             day_start=1, 
             hour_start=0, 

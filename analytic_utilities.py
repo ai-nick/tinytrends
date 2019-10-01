@@ -11,6 +11,8 @@ class AnalyticsUtility(object):
     trend_db = TinyDB("./db/tinytrenddb.json")
 
     def __init__(self, file_path):
+        self.filename = file_path.split('.')[0]
+        print(self.filename)
         self.full_data = pd.DataFrame().from_csv(file_path, index_col=None)
         return
 
@@ -35,15 +37,12 @@ class AnalyticsUtility(object):
         new_df_dictionary = {}
         cols = df.columns.values
         for i in cols:
-            new_df_dictionary[i] = []
-        col_len = len(cols)
-        df_len = len(df)
-        # this is our while loop endcase for 24 hr aggs, cause zero index
-        indexer = interval_size-1
-        while indexer <= (df_len -interval_size-1):
-            for i in cols:
+            colSeries = pd.Series(df[i])
+            new_df_dictionary[i] = colSeries.groupby(colSeries.index // interval_size).sum()
+        new_df = pd.DataFrame().from_dict(new_df_dictionary)
+        new_df.to_csv(self.filename + str(interval_size)+".txt")
 
 
 
-
-tp = AnalyticsUtility('./bodystyle_trends.txt')
+tp = AnalyticsUtility('bodystyle_trends.txt')
+tp.aggregate_and_save(24)

@@ -10,8 +10,11 @@ class TrendPredictor(object):
 
     trend_db = TinyDB("./db/tinytrenddb.json")
 
-    def __init__(self):
-        self.full_data = pd.DataFrame().from_csv('./bodystyle_trends.txt', index_col=None)
+    def __init__(self, file_path, no_index = True):
+        if(no_index):
+            self.full_data = pd.DataFrame().from_csv(file_path, index_col=None)
+        else:
+            self.full_data = pd.DataFrame().from_csv(file_path)
         return
 
     def print_out_db(self):
@@ -51,10 +54,10 @@ class TrendPredictor(object):
         plt.gca().legend(('predicted','actual'))
         plt.show()
 
-    def get_feature_correlation_cartesian(self):
-        print(self.full_data.head())
-        df = self.full_data.drop(columns=['isPartial', 'date'])
-        #df.fillna(0.0, inplace=True)
+    def get_feature_correlation_cartesian(self, drop_cols=False):
+        df = self.full_data
+        if(drop_cols != False):
+            df = self.full_data.drop(columns=['isPartial', 'date'])
         columns = df.columns.values
         for i in range(len(columns)):
             if(i+1 != len(columns)):
@@ -69,6 +72,9 @@ class TrendPredictor(object):
         working_df[col_name+"_rolling_34"] = working_df.rolling(window=34)[col_name].mean()
         working_df[col_name+"_rolling_13"] = working_df.rolling(window=13)[col_name].mean()
         working_df[col_name+"_rolling_5"] = working_df.rolling(window=5)[col_name].mean()
+        working_df[col_name+"_34_roc"] = working_df[col_name].pct_change(34)
+        working_df[col_name+"_21_roc"] = working_df[col_name].pct_change(21)
+        working_df[col_name+"_3_roc"] = working_df[col_name].pct_change(3)
         working_df[col_name] = working_df[col_name].shift(1)
         working_df.dropna(inplace=True)
         print(working_df.head())
@@ -78,6 +84,6 @@ class TrendPredictor(object):
 
 
 
-tp = TrendPredictor()
-tp.predict_column_better_features('coupe', .7)
+tp = TrendPredictor('./bodystyle_trends24.txt')
+tp.predict_column_better_features('coupe', .89)
 #tp.get_feature_correlation_cartesian()
